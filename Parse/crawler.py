@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 import os
 import pandas as pd
 import numpy as np
@@ -17,11 +18,15 @@ import sys
 print(f"Beginning:{sys.argv[1]}, End: {sys.argv[2]}")
 
 parent_dir = os.path.abspath(os.path.join(__file__, os.pardir))
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+company = "Salesforce"
+
 
 while True:
     try:
-        driver = webdriver.Chrome(os.path.join(parent_dir , "src/chromedriver"))
-
+        driver = webdriver.Chrome(os.path.join(parent_dir , "src/chromedriver"), options=chrome_options)
+        print("Chrome initialized")
         info_paths = {"rating":".//span[@class='ratingNumber mr-xsm']", 
             "position":".//span[@class='authorInfo']",
             "title":".//a[@class='reviewLink']",
@@ -30,13 +35,14 @@ while True:
             "cons":".//span[@data-test='cons']",
              }
 
-        company = "Salesforce" # No intention to generalize the parser soon, but just in case...
+         # No intention to generalize the parser soon, but just in case...
 
         driver.get("https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159.htm?countryRedirect=true")
         driver.get("https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159.htm?countryPickerRedirect=true")
         driver.get("https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159.htm?sort.sortType=RD&sort.ascending=true&countryPickerRedirect=true")
         # Detect problem if glassdoor is blocked
         assert "Glassdoor" in driver.title
+        print("Web source ready")
 
         reviewcount = int(driver.find_element_by_xpath('//h2[@data-test="overallReviewCount"]/span/strong[1]').text.replace(",",""))              
         nr_pages = math.trunc(reviewcount/10) + 1
@@ -56,8 +62,7 @@ while True:
             table_results = pd.DataFrame([[results[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] + [datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") ,company ,glass_ids[o-1].get_attribute("id")] for o in range(10)])
             
             # We get rid of unnecessary data already loaded in DB. We only load at 100 by 100 bits.
-            try: 
-                
+            try:                 
                 if aggr_table.shape[0] >= 100 or page == high_end:
                     insert(aggr_table)
                     aggr_table = table_results.copy()
@@ -78,7 +83,7 @@ while True:
                 errorlog.writelines(f"\n {timer_err}: ERROR {err} at page {sys.argv[1]} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
                 print(f"\n {timer_err} ERROR {err} at page {sys.argv[1]} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
             
-print("Done!")
+print(f"Done! ({sys.argv[1]} - {sys.argv[2]})")
     # Index them by id (page | pos)
     # Recurrent calls to staging DB
 
