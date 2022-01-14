@@ -15,10 +15,12 @@ import sys
 # 975
 # Divide work
 print(f"Beginning:{sys.argv[1]}, End: {sys.argv[2]}")
+
+parent_dir = os.path.abspath(os.path.join(__file__, os.pardir))
+
 while True:
     try:
-
-        driver = webdriver.Chrome(os.path.join(os.path.abspath(os.getcwd()) , "src/chromedriver"))
+        driver = webdriver.Chrome(os.path.join(parent_dir , "src/chromedriver"))
 
         info_paths = {"rating":".//span[@class='ratingNumber mr-xsm']", 
             "position":".//span[@class='authorInfo']",
@@ -45,8 +47,9 @@ while True:
             table_results = pd.DataFrame([[results[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] + [datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") ,company ,glass_ids[o-1].get_attribute("id")] for o in range(10)])
             aggr_table = table_results.copy()
 
-
-        for page in range(max(2, int(sys.argv[1])), int(sys.argv[2])):
+        high_end = int(sys.argv[2])
+        low_end = int(sys.argv[1])
+        for page in range(max(2, low_end), high_end+1):
             driver.get(f"https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159_P{page}.htm?sort.sortType=RD&sort.ascending=true&filter.iso3Language=eng")
             results = driver.find_elements_by_xpath('//div[@class="gdReview"]')
             glass_ids = driver.find_elements_by_xpath("//div[@id='ReviewsRef']/div/ol/li")
@@ -54,7 +57,8 @@ while True:
             
             # We get rid of unnecessary data already loaded in DB. We only load at 100 by 100 bits.
             try: 
-                if aggr_table.shape[0] >= 100:
+                
+                if aggr_table.shape[0] >= 100 or page == high_end:
                     insert(aggr_table)
                     aggr_table = table_results.copy()
                 else:
@@ -65,7 +69,7 @@ while True:
         break
     except Exception as err:
         timer_err = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        with open("src/errorlog.txt", "a") as errorlog:
+        with open(os.path.join(parent_dir , "src/errorlog.txt"), "a") as errorlog:
             try:
                 errorlog.writelines(f"\n {timer_err}: ERROR {err} at page {page} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
                 print(f"\n {timer_err} ERROR {err} at page {page} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
