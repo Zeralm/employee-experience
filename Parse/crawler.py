@@ -1,0 +1,90 @@
+from time import time
+import selenium
+import math
+from selenium import webdriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+import os
+import pandas as pd
+import numpy as np
+import mysql.connector
+import datetime
+from dbconnect import insert
+import sys
+# 975
+# Divide work
+print(f"Beginning:{sys.argv[1]}, End: {sys.argv[2]}")
+while True:
+    try:
+
+        driver = webdriver.Chrome(os.path.join(os.path.abspath(os.getcwd()) , "src/chromedriver"))
+
+        info_paths = {"rating":".//span[@class='ratingNumber mr-xsm']", 
+            "position":".//span[@class='authorInfo']",
+            "title":".//a[@class='reviewLink']",
+            "employment":".//span[@class='pt-xsm pt-md-0 css-1qxtz39 eg4psks0']",
+            "pros":".//span[@data-test='pros']",
+            "cons":".//span[@data-test='cons']",
+             }
+
+        company = "Salesforce" # No intention to generalize the parser soon, but just in case...
+
+        driver.get("https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159.htm?countryRedirect=true")
+        driver.get("https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159.htm?countryPickerRedirect=true")
+        driver.get("https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159.htm?sort.sortType=RD&sort.ascending=true&countryPickerRedirect=true")
+        # Detect problem if glassdoor is blocked
+        assert "Glassdoor" in driver.title
+
+        reviewcount = int(driver.find_element_by_xpath('//h2[@data-test="overallReviewCount"]/span/strong[1]').text.replace(",",""))              
+        nr_pages = math.trunc(reviewcount/10) + 1
+        print(str(nr_pages) + " pages")
+        if sys.argv[1] == 1:
+            results = driver.find_elements_by_xpath('//div[@class="gdReview"]')
+            glass_ids = driver.find_elements_by_xpath("//div[@id='ReviewsRef']/div/ol/li")
+            table_results = pd.DataFrame([[results[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] + [datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") ,company ,glass_ids[o-1].get_attribute("id")] for o in range(10)])
+            aggr_table = table_results.copy()
+
+
+        for page in range(max(2, int(sys.argv[1])), int(sys.argv[2])):
+            driver.get(f"https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159_P{page}.htm?sort.sortType=RD&sort.ascending=true&filter.iso3Language=eng")
+            results = driver.find_elements_by_xpath('//div[@class="gdReview"]')
+            glass_ids = driver.find_elements_by_xpath("//div[@id='ReviewsRef']/div/ol/li")
+            table_results = pd.DataFrame([[results[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] + [datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") ,company ,glass_ids[o-1].get_attribute("id")] for o in range(10)])
+            
+            # We get rid of unnecessary data already loaded in DB. We only load at 100 by 100 bits.
+            try: 
+                if aggr_table.shape[0] >= 100:
+                    insert(aggr_table)
+                    aggr_table = table_results.copy()
+                else:
+                    aggr_table = pd.concat([aggr_table, table_results])
+                    print(aggr_table)
+            except NameError:
+                aggr_table = table_results
+        break
+    except Exception as err:
+        timer_err = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        with open("src/errorlog.txt", "a") as errorlog:
+            try:
+                errorlog.writelines(f"\n {timer_err}: ERROR {err} at page {page} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
+                print(f"\n {timer_err} ERROR {err} at page {page} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
+                        
+            except NameError:
+                errorlog.writelines(f"\n {timer_err}: ERROR {err} at page {sys.argv[1]} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
+                print(f"\n {timer_err} ERROR {err} at page {sys.argv[1]} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
+            
+print("Done!")
+    # Index them by id (page | pos)
+    # Recurrent calls to staging DB
+
+
+
+
+# DB fields
+# id, rating, info, title, employment, pros, cons, time, company, glass_id 
+# For staging DB also the time or stage of arrival and for final too
+
+# print(pd.DataFrame([[driver.find_elements_by_xpath('//div[@class="gdReview"]')[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] for o in range(10)]))
+# [print(driver.find_elements_by_xpath('//div[@class="gdReview"]')[0].find_element_by_xpath(info_paths[i]).get_attribute('textContent')) for i in info_paths] # A test of the content of the review
+# Something's wrong alert xpath: //div[@class='text']/strong where the text comprises: "Something's wrong"

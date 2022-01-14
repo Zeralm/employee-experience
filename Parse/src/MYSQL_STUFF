@@ -1,0 +1,17 @@
+ 
+sudo service mysql start
+OR
+restart
+OR
+stop
+
+
+CREATE USER 'testuser'@'localhost' IDENTIFIED BY "testuser";
+GRANT ALL PRIVILEGES ON *.* TO 'testuser'@'localhost';
+
+For database in scrapper
+user: host host:localhost password: notasecret
+
+
+
+
