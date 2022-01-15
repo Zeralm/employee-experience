@@ -11,3 +11,9 @@ from unknown error: web view not found
  15/01/2022 22:58:24: ERROR Message: stale element reference: element is not attached to the page document
   (Session info: headless chrome=96.0.4664.110)
  at page 3 while attempting parsing from 1 to 5
+
+ 15/01/2022 23:13:18: ERROR name 'aggr_table' is not defined at page 2 while attempting parsing from 1 to 5
+
+ 15/01/2022 23:13:45: ERROR name 'aggr_table' is not defined at page 2 while attempting parsing from 1 to 5
+
+ 15/01/2022 23:14:09: ERROR name 'aggr_table' is not defined at page 2 while attempting parsing from 1 to 5
