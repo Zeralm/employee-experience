@@ -7,3 +7,7 @@
 from unknown error: web view not found
   (Session info: chrome=96.0.4664.110)
  at page 3 while attempting parsing from 2 to 7
+
+ 15/01/2022 22:58:24: ERROR Message: stale element reference: element is not attached to the page document
+  (Session info: headless chrome=96.0.4664.110)
+ at page 3 while attempting parsing from 1 to 5

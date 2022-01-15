@@ -65,10 +65,13 @@ while True:
             table_results = pd.DataFrame([[results[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] + [datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") ,company ,glass_ids[o-1].get_attribute("id")] for o in range(10)])
             
             # We get rid of unnecessary data already loaded in DB. We only load at 100 by 100 bits.
-            try:                 
-                if aggr_table.shape[0] >= 100 or page == high_end:
+            try: 
+                if page == high_end:
+                    aggr_table = pd.concat([aggr_table, table_results])
+                    insert(aggr_table)               
+                elif aggr_table.shape[0] >= 100:
                     insert(aggr_table)
-                    aggr_table = table_results.copy()
+                    aggr_table = table_results.copy()       
                 else:
                     aggr_table = pd.concat([aggr_table, table_results])
                     print(aggr_table)
