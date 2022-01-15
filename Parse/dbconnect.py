@@ -1,11 +1,10 @@
-import imp
 import mysql.connector
 import pandas as pd
 import datetime
 
 
 
-def insert(values ,host="localhost", user="testuser", password="testuser", database="fifth_try"):
+def insert(values ,host="localhost", user="testuser", password="testuser", database="first_try"):
     """
     """
     con = mysql.connector.connect(
@@ -53,10 +52,11 @@ def extract(host="localhost", user="testuser", password="testuser", database="fi
     print(f"{len(out)} values extracted")
     return out
 
-def send(host="34.79.95.247", user="parse-test", password="parse-test", database="glass_data"):
-    locs = pd.DataFrame(extract())
+def send(host="34.79.95.247", user="test-db", password="test-db", database="glass_data"):
+    locs = pd.DataFrame(extract()).drop(0, axis=1)
     locs["staging"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     values = locs.copy()
+    print(values)
     con = mysql.connector.connect(
     host=host,
     user=user,
@@ -80,7 +80,7 @@ def send(host="34.79.95.247", user="parse-test", password="parse-test", database
 # print(cursObj.fetchall())
 
 
-
+# send()
 
 # CREATE ONE TYPE OF PARTICULAR FUNCTION FOR GATHERING AND A GENERAL-END TYPE OF FUNCTION 
 # IN WHICH YOU SPECIFY THE QUERY AND THE PARAMETERS

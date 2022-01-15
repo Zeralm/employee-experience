@@ -11,11 +11,14 @@ import pandas as pd
 import numpy as np
 import mysql.connector
 import datetime
-from dbconnect import insert
+from dbconnect import insert, send
 import sys
 # 975
 # Divide work
 print(f"Beginning:{sys.argv[1]}, End: {sys.argv[2]}")
+
+
+# Many things about to be deprecated
 
 parent_dir = os.path.abspath(os.path.join(__file__, os.pardir))
 chrome_options = Options()
