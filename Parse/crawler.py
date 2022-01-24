@@ -22,9 +22,11 @@ print(f"Beginning:{sys.argv[1]}, End: {sys.argv[2]}")
 
 parent_dir = os.path.abspath(os.path.join(__file__, os.pardir))
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+#chrome_options.add_argument("--headless")
 company = "Salesforce"
-
+high_end = int(sys.argv[2])
+low_end = int(sys.argv[1])
+next_low_end = max(2, low_end)
 
 while True:
     try:
@@ -56,9 +58,7 @@ while True:
             table_results = pd.DataFrame([[results[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] + [datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") ,company ,glass_ids[o-1].get_attribute("id")] for o in range(10)])
             aggr_table = table_results.copy()
 
-        high_end = int(sys.argv[2])
-        low_end = int(sys.argv[1])
-        for page in range(max(2, low_end), high_end+1):
+        for page in range(next_low_end, high_end+1):
             driver.get(f"https://www.glassdoor.com/Reviews/Salesforce-Reviews-E11159_P{page}.htm?sort.sortType=RD&sort.ascending=true&filter.iso3Language=eng")
             results = driver.find_elements_by_xpath('//div[@class="gdReview"]')
             glass_ids = driver.find_elements_by_xpath("//div[@id='ReviewsRef']/div/ol/li")
@@ -69,10 +69,12 @@ while True:
             try: 
                 if page == high_end:
                     aggr_table = pd.concat([aggr_table, table_results])
-                    insert(aggr_table) 
+                    insert(aggr_table, database=sys.argv[3])
+                    next_low_end = page
                     print(aggr_table)              
                 elif aggr_table.shape[0] >= 100:
-                    insert(aggr_table)
+                    insert(aggr_table, database=sys.argv[3])
+                    next_low_end = page
                     aggr_table = table_results.copy()       
                 else:
                     aggr_table = pd.concat([aggr_table, table_results])

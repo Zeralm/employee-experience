@@ -4,7 +4,7 @@ import datetime
 
 
 
-def insert(values ,host="localhost", user="testuser", password="testuser", database="first_try"):
+def insert(values ,database, host="34.79.95.247", user="test-db", password="test-db"):
     """
     """
     con = mysql.connector.connect(
@@ -15,8 +15,8 @@ def insert(values ,host="localhost", user="testuser", password="testuser", datab
     cursObj = con.cursor()
     
     try:
-        cursObj.execute(f"CREATE DATABASE IF NOT EXISTS {database};")
-        cursObj.execute(f"USE {database};")
+        cursObj.execute(f"CREATE DATABASE IF NOT EXISTS staging_{database};")
+        cursObj.execute(f"USE staging_{database};")
         cursObj.execute(f"CREATE TABLE IF NOT EXISTS opinions(id INTEGER AUTO_INCREMENT, rating FLOAT, info TEXT, title TEXT, employment TEXT, pros TEXT, cons TEXT, time TEXT, company TEXT, glass_id TEXT, PRIMARY KEY(id));")
         cursObj.executemany("INSERT INTO opinions(rating, info, title, employment, pros, cons, time, company, glass_id) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s);", list(values.itertuples(index=False, name=None)))
         con.commit()
@@ -33,7 +33,7 @@ def insert(values ,host="localhost", user="testuser", password="testuser", datab
 # [3.0, "info", "title", "employment", "pros", "cons", "time", "company", "glass_id"]
 
 # insert(io)
-def extract(host="localhost", user="testuser", password="testuser", database="first_try"):
+def extract(database ,host="34.79.95.247", user="test-db", password="test-db"):
     """
     """
     con = mysql.connector.connect(
@@ -43,7 +43,7 @@ def extract(host="localhost", user="testuser", password="testuser", database="fi
     )
     cursObj = con.cursor()
     try:        
-        cursObj.execute(f"USE {database}")
+        cursObj.execute(f"USE staging_{database}")
         cursObj.execute("SELECT * FROM opinions;")
         out = cursObj.fetchall()
     finally:

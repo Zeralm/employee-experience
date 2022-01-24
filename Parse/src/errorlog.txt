@@ -17,3 +17,13 @@ from unknown error: web view not found
  15/01/2022 23:13:45: ERROR name 'aggr_table' is not defined at page 2 while attempting parsing from 1 to 5
 
  15/01/2022 23:14:09: ERROR name 'aggr_table' is not defined at page 2 while attempting parsing from 1 to 5
+
+ 23/01/2022 00:04:37: ERROR list index out of range at page 3 while attempting parsing from 1 to 5
+
+ 23/01/2022 00:09:16: ERROR list index out of range at page 2 while attempting parsing from 1 to 5
+
+ 23/01/2022 00:10:04: ERROR  at page 2 while attempting parsing from 1 to 5
+
+ 23/01/2022 00:11:19: ERROR list index out of range at page 5 while attempting parsing from 1 to 5
+
+ 23/01/2022 01:53:06: ERROR 2003 (HY000): Can't connect to MySQL server on '34.79.95.247:3306' (110) at page 5 while attempting parsing from 1 to 5
