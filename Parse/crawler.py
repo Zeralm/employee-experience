@@ -22,7 +22,7 @@ print(f"Beginning:{sys.argv[1]}, End: {sys.argv[2]}")
 
 parent_dir = os.path.abspath(os.path.join(__file__, os.pardir))
 chrome_options = Options()
-#chrome_options.add_argument("--headless")
+chrome_options.add_argument("--headless")
 company = "Salesforce"
 high_end = int(sys.argv[2])
 low_end = int(sys.argv[1])
