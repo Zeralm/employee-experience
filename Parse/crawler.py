@@ -38,8 +38,10 @@ def retry(func):
                         errorlog.writelines(f"\n {timer_err}: ERROR {err} at page {sys.argv[1]} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
                         print(f"\n {timer_err} ERROR {err} at page {sys.argv[1]} while attempting parsing from {sys.argv[1]} to {sys.argv[2]}\n")
             finally:
-                driver.quit()
-            
+                try:
+                    driver.quit()
+                except:
+                    pass
     return retry_2
 @retry
 def crawl():
