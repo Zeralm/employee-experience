@@ -27,3 +27,71 @@ from unknown error: web view not found
  23/01/2022 00:11:19: ERROR list index out of range at page 5 while attempting parsing from 1 to 5
 
  23/01/2022 01:53:06: ERROR 2003 (HY000): Can't connect to MySQL server on '34.79.95.247:3306' (110) at page 5 while attempting parsing from 1 to 5
+
+ 24/01/2022 19:42:25: ERROR 'str' object is not callable at page 1 while attempting parsing from 1 to 5
+
+ 24/01/2022 19:42:48: ERROR 'str' object is not callable at page 1 while attempting parsing from 1 to 5
+
+ 24/01/2022 19:43:06: ERROR 'str' object is not callable at page 1 while attempting parsing from 1 to 5
+
+ 24/01/2022 19:43:24: ERROR 'str' object is not callable at page 1 while attempting parsing from 1 to 5
+
+ 24/01/2022 19:43:42: ERROR 'str' object is not callable at page 1 while attempting parsing from 1 to 5
+
+ 24/01/2022 23:06:19: ERROR list index out of range at page 2 while attempting parsing from 1 to 5
+
+ 24/01/2022 23:27:54: ERROR list index out of range at page 2 while attempting parsing from 1 to 5
+
+ 24/01/2022 23:39:13: ERROR list index out of range at page 3 while attempting parsing from 1 to 20
+
+ 24/01/2022 23:45:50: ERROR list index out of range at page 2 while attempting parsing from 1 to 20
+
+ 24/01/2022 23:47:06: ERROR list index out of range at page 4 while attempting parsing from 1 to 20
+
+ 24/01/2022 23:51:36: ERROR list index out of range at page 20 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:00:51: ERROR list index out of range at page 17 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:05:15: ERROR list index out of range at page 18 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:10:23: ERROR list index out of range at page 13 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:12:19: ERROR list index out of range at page 19 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:14:16: ERROR list index out of range at page 20 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:15:40: ERROR list index out of range at page 11 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:17:23: ERROR list index out of range at page 18 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:18:37: ERROR list index out of range at page 14 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:19:44: ERROR list index out of range at page 13 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:21:01: ERROR list index out of range at page 14 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:22:58: ERROR list index out of range at page 19 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:24:00: ERROR list index out of range at page 12 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:25:35: ERROR list index out of range at page 18 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:26:22: ERROR  at page 18 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:27:26: ERROR list index out of range at page 13 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:29:09: ERROR list index out of range at page 19 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:30:29: ERROR list index out of range at page 16 while attempting parsing from 1 to 20
+
+ 25/01/2022 00:32:03: ERROR list index out of range at page 18 while attempting parsing from 1 to 20
+
+ 25/01/2022 01:22:19: ERROR list index out of range at page 7 while attempting parsing from 1 to 10
+
+ 25/01/2022 01:23:06: ERROR  at page 7 while attempting parsing from 1 to 10
+
+ 25/01/2022 01:24:39: ERROR list index out of range at page 8 while attempting parsing from 1 to 10
+
+ 25/01/2022 01:29:14: ERROR list index out of range at page 2 while attempting parsing from 1 to 15
+
+ 25/01/2022 01:30:03: ERROR  at page 2 while attempting parsing from 1 to 15
