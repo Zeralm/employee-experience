@@ -25,6 +25,7 @@ def retry(func):
             try:
                 global driver
                 chrome_options = Options()
+                chrome_options.add_argument("--headless")
                 driver = webdriver.Chrome(os.path.join(parent_dir , "src/chromedriver"), options=chrome_options)
                 result = func()
             except Exception as err:
@@ -50,7 +51,7 @@ def crawl():
             global page
             
             
-            #chrome_options.add_argument("--headless")
+            
             
             print("Chrome initialized")
             
