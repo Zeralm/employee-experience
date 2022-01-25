@@ -23,6 +23,9 @@ def retry(func):
         result = False
         while result == False:
             try:
+                global driver
+                chrome_options = Options()
+                driver = webdriver.Chrome(os.path.join(parent_dir , "src/chromedriver"), options=chrome_options)
                 result = func()
             except Exception as err:
                 timer_err = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -43,10 +46,10 @@ def crawl():
         
             global next_low_end
             global page
-            global driver
-            chrome_options = Options()
+            
+            
             #chrome_options.add_argument("--headless")
-            driver = webdriver.Chrome(os.path.join(parent_dir , "src/chromedriver"), options=chrome_options)
+            
             print("Chrome initialized")
             
 
