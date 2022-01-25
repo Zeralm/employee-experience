@@ -92,7 +92,7 @@ def crawl():
                         insert(aggr_table, database=sys.argv[3]) 
                         next_low_end = page
                         print(aggr_table)              
-                    elif aggr_table.shape[0] >= 100:
+                    elif aggr_table.shape[0] >= 50:
                         insert(aggr_table, database=sys.argv[3])
                         next_low_end = page
                         aggr_table = table_results.copy()       
