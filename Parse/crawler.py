@@ -85,7 +85,7 @@ def crawl():
                 table_results = pd.DataFrame([[results[o].find_element_by_xpath(info_paths[i]).get_attribute('textContent') for i in info_paths] + [datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S") ,company ,glass_ids[o-1].get_attribute("id")] for o in range(10)])
             
                 # We get rid of unnecessary data already loaded in DB. We only load at 100 by 100 bits.
-                print(aggr_table)
+                
                 try: 
                     if page == high_end:
                         aggr_table = pd.concat([aggr_table, table_results])
@@ -98,9 +98,10 @@ def crawl():
                         aggr_table = table_results.copy()       
                     else:
                         aggr_table = pd.concat([aggr_table, table_results])
-                    
+                
                 except NameError:
                     aggr_table = table_results
+                print(aggr_table)           
             return True
 
 
