@@ -52,8 +52,8 @@ def extract(database ,host="34.79.95.247", user="test-db", password="test-db"):
     print(f"{len(out)} values extracted")
     return out
 
-def send(host="34.79.95.247", user="test-db", password="test-db", database="glass_data"):
-    locs = pd.DataFrame(extract()).drop(0, axis=1)
+def send(numb, host="34.79.95.247", user="test-db", password="test-db", database="glass_data"):
+    locs = pd.DataFrame(extract(f"staging_{numb}")).drop(0, axis=1)
     locs["staging"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     values = locs.copy()
     print(values)
